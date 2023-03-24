@@ -8,6 +8,7 @@ const login = require('./routes/auth')
 const dotenv = require('dotenv');
 dotenv.config();
 app.use(cors());
+//
 app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.json());
 app.use(require('./routes/auth'))

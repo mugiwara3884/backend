@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = function(req, res, next) {
 
-  const token = req.header("jwtToken");
+  const token = req.header("token");
   // Check if not token
   if (!token) {
     return res.status(403).json({ msg: "authorization denied" });

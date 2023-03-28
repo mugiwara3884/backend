@@ -1,18 +1,22 @@
 const express = require('express')
-
+const bodyParser = require('body-parser')
 const cors=require('cors')
-const app = express()
-const path=require('path');
-const bodyParser = require('body-parser');
-const login = require('./routes/auth')
-const dotenv = require('dotenv');
-dotenv.config();
-app.use(cors());
-app.use(express.static(path.join(__dirname, '/public')))
-app.use(express.json());
-app.use(require('./routes/auth'))
+const userRoutes=require('./routes/user')
 
-app.listen(3000,()=>{
-console.log("server started at 3000 port")
-})
+const sequelize=require('./util/database')
+const new_user =  require('./routes/add_user')
+
+const app=express();
+
+app.use(cors())
+app.use(bodyParser.json({extended:false}))
+app.use(bodyParser.urlencoded({extended:false}))
+
+app.use(userRoutes)
+app.use(new_user)
+
+sequelize.sync().then(response=>{
+    // console.log(response)
+    app.listen(process.env.PORT || 3000, ()=>console.log("Server started running on Port: 3000"))
+}).catch(err=>console.log(err))
 

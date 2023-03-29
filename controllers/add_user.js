@@ -38,6 +38,19 @@ exports.register_new  = ( async (req, res) => {
     //     res.status(500).send('An error occurred while trying to add the user to the database.');
     // }
 });
+
+// getuser
+exports.getalluser=(req,res)=>{
+  User.findAll().then(data=>{
+    res.status(200).json({message:"success",data})
+  }).catch(()=>{
+   res.status(500).send('An error occurred while trying to fetch users from the database.'); res
+  })
+}
+
+
+
+
 //  edit user_details
 
 exports.edituser=(req,res)=>{
@@ -93,6 +106,16 @@ exports.blockeduser= async(req,res)=>{
 
 // 
 
-// exports.user_list = (req,res)=>{
-//   const req = 
-// }
+exports.user_list = (req,res)=>{
+  const user_grp = req.body.group_name;
+  User.findAll({
+
+    where:{
+      add_group:user_grp
+    }
+  }).then(data=>{
+    return res.status(200).json({message:"success",data})
+  }).catch(()=>{
+    res.status(500).json({success:false,message:"user not found"})
+   })
+}

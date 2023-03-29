@@ -89,3 +89,10 @@ exports.blockeduser= async(req,res)=>{
 
 }
 }
+
+
+// 
+
+// exports.user_list = (req,res)=>{
+//   const req = 
+// }

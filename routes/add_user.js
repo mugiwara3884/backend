@@ -9,7 +9,7 @@ const Authenticate=require('../middleware/authorization')
 router.post('/newuser',add_userController.register_new);
 // router.post('/login',userController.loginUser)
 router.get('/edit/:userId',add_userController.edituser);
-router.get('/get_user',add_userController.getalluser)
+router.post('/get_user',add_userController.getalluser)
 
 module.exports=router
 

@@ -8,7 +8,7 @@ exports.register_new  = ( async (req, res) => {
        .then(users=>{
            const user=users[0]
            if(user)
-           res.json({success:false,message:'User Already exist. Please Login'})
+           res.json({success:false,message:'this email already exist'})
            else
            {   
                User.create({
@@ -41,6 +41,7 @@ exports.register_new  = ( async (req, res) => {
 
 // getuser
 exports.getalluser=(req,res)=>{
+  const id = req.body.id
   User.findAll().then(data=>{
     res.status(200).json({message:"success",data})
   }).catch(()=>{

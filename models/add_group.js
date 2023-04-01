@@ -12,7 +12,11 @@ const group=sequelize.define('add_group', {
     group_name:{
         type:Sequelize.STRING,
         allowedNull:false
-    }
+    },
+    group_description: {
+        type: Sequelize.STRING,
+        allowNull: false
+      }
 
 })
 

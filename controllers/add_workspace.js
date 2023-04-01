@@ -1,24 +1,24 @@
-const group = require('../models/add_group')
+const worksapce = require('../models/add_workspace')
 
 
 exports.add_workspace = async (req, res) => {
     try {
       const worksapcename = req.body.groupname;
-      const existingworskapce = await group.findOne({
-        where: { group_name: groupName }
+      const existingworskapce = await worksapce.findOne({
+        where: {  workspace_name: worksapcename }
       });
       console.log(existingworskapce,"grtyhb")
       if (existingworskapce) {
         return res.status(409).json({
-          message: 'Group name already exists'
+          message: 'workspace  name already exists'
         });
       }
-      const newGroup = await group.create({
-        group_name: groupName
+      const newworkspace = await worksapce.create({
+        workspace_name: worksapcename 
       });
       return res.status(201).json({
-        message: 'Group created successfully',
-        group: newGroup
+        message: 'worksapce created successfully',
+        worksapce_: newworkspace
       });
     } catch (error) {
       console.error(error);
@@ -27,6 +27,5 @@ exports.add_workspace = async (req, res) => {
       });
     }
   };
-//     show user to group 
-// find user who is in add_user table and group name  is a
+
 

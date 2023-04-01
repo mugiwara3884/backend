@@ -40,14 +40,34 @@ exports.register_new  = ( async (req, res) => {
 });
 
 // getuser
-exports.getalluser=(req,res)=>{
-  const id = req.body.id
-  User.findAll().then(data=>{
-    res.status(200).json({message:"success",data})
-  }).catch(()=>{
-   res.status(500).send('An error occurred while trying to fetch users from the database.'); res
+exports.getalluser = (req, res) => {
+  const page = parseInt(req.query.page) || 1; // set default page to 1
+  const limit = parseInt(req.query.limit) || 10; // set default limit to 10
+  const offset = (page - 1) * limit;
+
+  User.findAndCountAll({
+    offset,
+    limit
   })
-}
+    .then((result) => {
+      const totalPages = Math.ceil(result.count / limit);
+      const response = {
+        message: "success",
+        data: result.rows,
+        currentPage: page,
+        totalPages
+      };
+      res.status(200).json(response);
+    })
+    .catch(() => {
+      res
+        .status(500)
+        .send(
+          "An error occurred while trying to fetch users from the database."
+        );
+    });
+};
+
 
 
 
@@ -96,7 +116,7 @@ exports.blockeduser= async(req,res)=>{
   user.user_status = 'inactive';
   await user.save();
 
-  return res.status(204).send();
+  return res.status(204).send({message:"user blocked succesfully"});
 } catch (err) {
   console.error(err);
   return res.status(500).json({ error: 'Failed to block user' });

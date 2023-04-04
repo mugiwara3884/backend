@@ -107,7 +107,8 @@ exports.getalluser = (req, res) => {
 
   User.findAndCountAll({
     offset,
-    limit
+    limit,
+    order: [['createdAt', 'DESC']] 
   })
     .then((result) => {
       const totalPages = Math.ceil(result.count / limit);

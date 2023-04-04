@@ -98,7 +98,7 @@ exports.register_new = async (req, res) => {
   }
 };
 
-
+// get all _user with pagination 
 
 exports.getalluser = (req, res) => {
   const page = parseInt(req.query.page) || 1; // set default page to 1
@@ -166,23 +166,22 @@ exports.deleteuser=(req,res)=>{
 
 //  blocked user api
 
-exports.blockeduser= async(req,res)=>{
-   const id = req.params.userId;
-   const user = await User.findByPk(id);
-   try{
-   if (!user) {
-    return res.status(404).json({ error: 'User not found' });
+exports.blockeduser = async (req, res) => {
+  try {
+    const id = req.params.userId;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.user_status = req.body.user_status;
+    await user.save();
+    return res.status(200).json({ message: `User has been ${user.user_status === 'active' ? 'enabled' : 'disabled'}` });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
-  user.user_status = 'inactive';
-  await user.save();
+};
 
-  return res.status(204).send({message:"user blocked succesfully"});
-} catch (err) {
-  console.error(err);
-  return res.status(500).json({ error: 'Failed to block user' });
-
-}
-}
 
 
 // 
@@ -192,7 +191,8 @@ exports.user_list = (req,res)=>{
   User.findAll({
 
     where:{
-      add_group:user_grp
+      add_group:user_grp,
+      user_status : "active"
     }
   }).then(data=>{
     return res.status(200).json({message:"success",data})

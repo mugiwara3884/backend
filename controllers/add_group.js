@@ -14,7 +14,7 @@ exports.add_group = async (req, res) => {
           message: 'Group name already exists'
         });
       }
-      const newGroup = await group.create({
+      const newGroup = await  Group.create({
         group_name: groupName,
         group_description:group_description
       });

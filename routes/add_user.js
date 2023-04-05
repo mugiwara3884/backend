@@ -14,5 +14,6 @@ router.post('/get_user',add_userController.getalluser)
 router.get('/get_roles',add_userController.get_roles)
 router.post('/blockuser/:userId',add_userController.blockeduser)
 router.get('/useractivelist',add_userController.user_list)
+router.get('/userdropdown',add_userController.user_dropdown)
 module.exports=router
 

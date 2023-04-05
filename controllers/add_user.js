@@ -101,8 +101,8 @@ exports.register_new = async (req, res) => {
 // get all _user with pagination 
 
 exports.getalluser = (req, res) => {
-  const page = parseInt(req.query.page) || 1; // set default page to 1
-  const limit = parseInt(req.query.limit) || 10; // set default limit to 10
+  const page = parseInt(req.body.page) || 1; // set default page to 1
+  const limit = 10; // set default limit to 10
   const offset = (page - 1) * limit;
 
   User.findAndCountAll({
@@ -118,14 +118,11 @@ exports.getalluser = (req, res) => {
         currentPage: page,
         totalPages
       };
+
       res.status(200).json(response);
     })
     .catch(() => {
-      res
-        .status(500)
-        .send(
-          "An error occurred while trying to fetch users from the database."
-        );
+      res.status(500).send("An error occurred while trying to fetch users from the database.");
     });
 };
 
@@ -193,6 +190,20 @@ exports.user_list = (req,res)=>{
 
     where:{
       add_group:user_grp,
+      user_status : "active"
+    }
+  }).then(data=>{
+    return res.status(200).json({message:"success",data})
+  }).catch(()=>{
+    res.status(500).json({success:false,message:"user not found"})
+   })
+}
+//  user_drop_down
+exports.user_dropdown = (req,res)=>{
+
+  User.findAll({
+
+    where:{
       user_status : "active"
     }
   }).then(data=>{

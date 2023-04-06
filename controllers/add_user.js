@@ -47,8 +47,7 @@ const User = require('../models/add_user')
 
 exports.register_new = async (req, res) => {
   console.log("api hit")
-  const { user_type, display_name, emp_code, email, max_quota, add_group, validity_date, user_role } = req.body;
-  const { id } = req.params;
+  const { id,user_type, display_name, emp_code, email, max_quota, add_group, validity_date, user_role,password } = req.body;
   if (id) {
       // Update existing user
       try {
@@ -61,6 +60,7 @@ exports.register_new = async (req, res) => {
               display_name: display_name,
               emp_code: emp_code,
               email: email,
+              emp_password:password,
               max_quota: max_quota,
               add_group: add_group,
               user_status: "active",
@@ -83,6 +83,7 @@ exports.register_new = async (req, res) => {
               user_type: user_type,
               display_name: display_name,
               emp_code: emp_code,
+              emp_password:password,
               email: email,
               max_quota: max_quota,
               add_group: add_group,
@@ -102,7 +103,7 @@ exports.register_new = async (req, res) => {
 
 exports.getalluser = (req, res) => {
   const page = parseInt(req.body.page) || 1; // set default page to 1
-  const limit = 10; // set default limit to 10
+  const limit = 5; // set default limit to 10
   const offset = (page - 1) * limit;
 
   User.findAndCountAll({

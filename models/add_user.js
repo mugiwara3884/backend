@@ -17,6 +17,10 @@ const Users=sequelize.define('add_users', {
         type:Sequelize.STRING,
         allowedNull:false
     },
+    emp_password:{
+        type:Sequelize.STRING,
+        allowedNull:false
+    },
     emp_code:{
         type:Sequelize.STRING,
         allowedNull:false

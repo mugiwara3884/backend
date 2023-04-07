@@ -101,31 +101,31 @@ exports.register_new = async (req, res) => {
 
 // get all _user with pagination 
 
-exports.getalluser = (req, res) => {
-  const page = parseInt(req.body.page) || 1; // set default page to 1
-  const limit = 5; // set default limit to 10
-  const offset = (page - 1) * limit;
+// exports.getalluser = (req, res) => {
+//   const page = parseInt(req.body.page) || 1; // set default page to 1
+//   const limit = 5; // set default limit to 10
+//   const offset = (page - 1) * limit;
 
-  User.findAndCountAll({
-    offset,
-    limit,
-    order: [['createdAt', 'DESC']] 
-  })
-    .then((result) => {
-      const totalPages = Math.ceil(result.count / limit);
-      const response = {
-        message: "success",
-        data: result.rows,
-        currentPage: page,
-        totalPages
-      };
+//   User.findAndCountAll({
+//     offset,
+//     limit,
+//     order: [['createdAt', 'DESC']] 
+//   })
+//     .then((result) => {
+//       const totalPages = Math.ceil(result.count / limit);
+//       const response = {
+//         message: "success",
+//         data: result.rows,
+//         currentPage: page,
+//         totalPages
+//       };
 
-      res.status(200).json(response);
-    })
-    .catch(() => {
-      res.status(500).send("An error occurred while trying to fetch users from the database.");
-    });
-};
+//       res.status(200).json(response);
+//     })
+//     .catch(() => {
+//       res.status(500).send("An error occurred while trying to fetch users from the database.");
+//     });
+// };
 
 
 
@@ -133,6 +133,19 @@ exports.getalluser = (req, res) => {
 
 //  edit user_details
 
+exports.getalluser = async (req, res) => {
+  const page = parseInt(req.body.page) || 1; // set default page to 1
+  const limit = 5; // set default limit to 10
+  const offset = (page - 1) * limit;
+try{
+  const data  = await User.findAll()
+  res.status(200).json(data);
+}
+catch (err) {
+  console.log(err)
+  res.status(500).json({ success: false, message: 'An error occurred while trying to fetch users from the database' });
+}
+};
 exports.edituser=(req,res)=>{
    const id = req.params.userId
    console.log(id,"_____<")

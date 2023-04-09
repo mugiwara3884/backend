@@ -102,9 +102,9 @@ exports.register_new = async (req, res) => {
 // get all _user with pagination 
 
 exports.getalluser = (req, res) => {
-  const page = parseInt(req.body.currentPage) || 1; // set default page to 1
+  const page = parseInt(req.body.pageNumber) || 1; // set default page to 1
   
-  const limit =     5       //parseInt(req.body.pageSize) // set default limit to 10
+  const limit =  parseInt(req.body.pageSize) || 5      //parseInt(req.body.pageSize) // set default limit to 10
   const offset = (page - 1) * limit;
 
   User.findAndCountAll({

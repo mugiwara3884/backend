@@ -4,7 +4,8 @@ const Group = require('../models/add_group')
 exports.add_group = async (req, res) => {
     try {
       const groupName = req.body.group_name;
-      const group_description = req.body.group_description
+      const select_user = req.body.selected_user
+      const group_admin= req.body.group_admin
       const existingGroup = await Group.findOne({
         where: { group_name: groupName }
       });
@@ -16,7 +17,8 @@ exports.add_group = async (req, res) => {
       }
       const newGroup = await  Group.create({
         group_name: groupName,
-        group_description:group_description
+        selected_user:select_user,
+        group_admin:group_admin
       });
       return res.status(201).json({
         message: 'Group created successfully',
@@ -36,7 +38,35 @@ exports.add_group = async (req, res) => {
 
 
 
-exports.get_groups = async(req,res)=>{
+exports.get_groups = (req, res) => {
+  const page = parseInt(req.body.pageNumber) || 1; // set default page to 1
+  
+  const limit =  parseInt(req.body.pageSize) || 5 
+  const offset = (page - 1) * limit;
+
+  Group.findAndCountAll({
+    offset,
+    limit,
+    order: [['createdAt', 'DESC']] 
+  })
+    .then((result) => {
+      const totalPages = Math.ceil(result.count / limit);
+      const response = {
+        message: "success",
+        data: result.rows,
+        currentPage: page,
+        count:result.count,
+        totalPages
+      };
+
+      res.status(200).json(response);
+    })
+    .catch(() => {
+      res.status(500).send("An error occurred while trying to fetch groups from the database.");
+    });
+};
+// dropdown
+exports.drop_groups = async(req,res)=>{
   try {
     const groups = await Group.findAll();
     res.json({ success: true, message: 'Groups retrieved successfully', groups });

@@ -12,8 +12,19 @@ const workspace=sequelize.define('workspace', {
     workspace_name:{
         type:Sequelize.STRING,
         allowedNull:false
+    },   
+    selected_cabinet:{
+        type:Sequelize.STRING,
+        allowedNull:false
+    }, 
+    selected_user:{
+        type:Sequelize.STRING,
+        allowedNull:false
+    },
+    selected_group:{
+        type:Sequelize.STRING,
+        allowedNull:false
     }
-
 })
 
 module.exports=workspace;

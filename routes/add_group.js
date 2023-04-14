@@ -8,6 +8,6 @@ const Authenticate=require('../middleware/authorization')
 
 router.post('/add_group',add_userController.add_group);
 
-router.get('/get_groups',add_userController.get_groups);
-
+router.post('/get_groups',add_userController.get_groups);
+router.post('/dropdown_groups',add_userController.drop_groups);
 module.exports=router

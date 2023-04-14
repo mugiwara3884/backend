@@ -9,7 +9,7 @@ const cabinet=sequelize.define('add_cabinet', {
         autoIncrement: true,
         primaryKey: true
     },
-    cabinett_name:{
+    cabinet_name:{
         type:Sequelize.STRING,
         allowedNull:false
     },

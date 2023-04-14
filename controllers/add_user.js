@@ -47,7 +47,8 @@ const User = require('../models/add_user')
 
 exports.register_new = async (req, res) => {
   console.log("api hit")
-  const { id,user_type, display_name, emp_code, email, max_quota, add_group, validity_date, user_role,password } = req.body;
+  const { id,user_type, display_name, emp_code, email, max_quota, add_group,  userValidity, user_role,password } = req.body;
+  console.log(req.body,"____body")
   if (id) {
       // Update existing user
       try {
@@ -65,7 +66,7 @@ exports.register_new = async (req, res) => {
               add_group: add_group,
               user_status: "active",
               user_role: user_role,
-              validity_date: validity_date,
+              validity_date:  userValidity,
           });
           res.status(200).json({ success: true, message: 'User details updated successfully' });
       } catch (err) {
@@ -89,7 +90,7 @@ exports.register_new = async (req, res) => {
               add_group: add_group,
               user_status: "active",
               user_role: user_role,
-              validity_date: validity_date,
+              validity_date:  userValidity,
           });
           res.status(200).json({ success: true, message: 'Successfully created new user, login now' });
       } catch (err) {
@@ -102,9 +103,9 @@ exports.register_new = async (req, res) => {
 // get all _user with pagination 
 
 exports.getalluser = (req, res) => {
-  const page = parseInt(req.body.currentPage) || 1; // set default page to 1
+  const page = parseInt(req.body.pageNumber) || 1; // set default page to 1
   
-  const limit =     5       //parseInt(req.body.pageSize) // set default limit to 10
+  const limit =  parseInt(req.body.pageSize) || 5 
   const offset = (page - 1) * limit;
 
   User.findAndCountAll({
@@ -128,9 +129,6 @@ exports.getalluser = (req, res) => {
       res.status(500).send("An error occurred while trying to fetch users from the database.");
     });
 };
-
-
-
 
 
 //  edit user_details
@@ -163,26 +161,28 @@ exports.edituser=(req,res)=>{
  })
 }
 //  delete user 
-exports.deleteuser=(req,res)=>{
-  const id = req.params.userId
-  console.log(id,"_____<")
+exports.deleteuser = (req, res) => {
+  const id = parseInt(req.body.id);
+  console.log(id, "_____<");
   User.destroy({
-   where:{
-      id:id,
-   }
-}).then(res=>{
- res.status(200).json({success:true,message:"detele succesfully"})
-//  console.log(res,"edituser_")
-}).catch(()=>{
- res.status(500).json({success:false,message:"user not found"})
-})
-}
+    where: {
+      id: id,
+    },
+  })
+    .then(() => {
+      res.status(200).json({ success: true, message: "delete successfully" });
+    })
+    .catch(() => {
+      res.status(500).json({ success: false, message: "user not found" });
+    });
+};
+
 
 //  blocked user api
 
 exports.blockeduser = async (req, res) => {
   try {
-    const id = req.params.userId;
+    const id =parseInt( req.body.id);
     const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -220,7 +220,8 @@ exports.user_dropdown = (req,res)=>{
   User.findAll({
 
     where:{
-      user_status : "active"
+      user_status : "active",
+      
     }
   }).then(data=>{
     return res.status(200).json({message:"success",data})

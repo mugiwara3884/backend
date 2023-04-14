@@ -13,7 +13,11 @@ const group=sequelize.define('add_group', {
         type:Sequelize.STRING,
         allowedNull:false
     },
-    group_description: {
+    selected_user: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      group_admin: {
         type: Sequelize.STRING,
         allowNull: false
       }
@@ -21,3 +25,4 @@ const group=sequelize.define('add_group', {
 })
 
 module.exports=group;
+
